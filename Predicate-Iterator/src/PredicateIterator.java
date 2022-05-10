@@ -1,4 +1,7 @@
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.NoSuchElementException;
+import java.util.Queue;
 
 public class PredicateIterator<T> implements Iterator<T> {
     private final Iterator<T> iter;
@@ -6,6 +9,8 @@ public class PredicateIterator<T> implements Iterator<T> {
 
     private T nextEl;
     private T lastHandledElement;
+
+    private Queue<T> queue = new LinkedList<>();
 
     public PredicateIterator(Iterator<T> iter, Predicate<T> predicate) {
         if(iter == null || predicate == null) {
@@ -18,12 +23,18 @@ public class PredicateIterator<T> implements Iterator<T> {
     @Override
     public boolean hasNext() {
         while(iter.hasNext()) {
+            // Wenn Elemente in Queue vorhanden -> hasNext() bereits zuvor aufgerufen
+            // Zunächst Elemente in Queue abarbeiten, bevor weitere iter.next() überprüft werden
+            if(!queue.isEmpty()) {
+                return true;
+            }
+
             // iter.next() muss hier bereits in iter.hasNext() aufgerufen werden, um Gültigkeit der Prädikatsbedingung prüfen zu können
             // -> wenn nicht zutreffend, muss betreffendes Element ignoriert werden
-            // -> wenn passendes Element gefunden, Zwischenspeicherung mit nextEl nötig (erneuter Aufruf von iter.next() würde zum Überspringen des gefundenen Elements führen)
+            // -> wenn passendes Element gefunden, Zwischenspeicherung nötig (erneuter Aufruf von iter.next() würde zum Überspringen des gefundenen Elements führen)
             T next = iter.next();
             if(predicate.test(next)) {
-                nextEl = next;
+                queue.add(next);
                 return true;
             }
         }
@@ -32,18 +43,17 @@ public class PredicateIterator<T> implements Iterator<T> {
 
     @Override
     public T next() {
-        // Hat sich nextEl seit dem letzten Aufruf von next() verändert? -> nein: auf nächsten Listenelement setzen
-        if(lastHandledElement != null && lastHandledElement.equals(nextEl)){
-            nextEl = iter.next();
+        // Wenn Queue leer -> nächstes Element in iter suchen, welches Prädikatsbedingung erfüllt
+        if(queue.isEmpty()) {
+            while(iter.hasNext()) {
+                T next = iter.next();
+                if(predicate.test(next)) {
+                    return next;
+                }
+            }
+            throw new NoSuchElementException();
         }
-
-        // Nächstes Element auf Prädikatsbedingung prüfen -> weiter inkrementieren, wenn nicht zutreffend
-        while(!predicate.test(nextEl)){
-            nextEl = iter.next();
-        }
-
-        // Letztes behandeltes nextEl puffern
-        lastHandledElement = nextEl;
-        return nextEl;
+        // Wenn Queue nicht leer -> oberstes Element zurückgeben
+        return queue.poll();
     }
 }
