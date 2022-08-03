@@ -1,14 +1,11 @@
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-public class Team extends AbstractEnterpriseUnit {
+public class Team extends AbstractEnterpriseUnit{
     private StaffMember teamLeader;
-
     public Team(String name, StaffMember teamLeader) {
         super(name);
-        if(teamLeader == null) {
-            throw new NullPointerException();
-        }
+        if(teamLeader == null) throw new NullPointerException();
         this.teamLeader = teamLeader;
     }
 
@@ -17,13 +14,10 @@ public class Team extends AbstractEnterpriseUnit {
     }
 
     public SortedSet<StaffMember> getTeamMembers() {
-        SortedSet<StaffMember> staff = new TreeSet<>();
-        staff.add(teamLeader);
+        SortedSet<StaffMember> team = new TreeSet<>();
+        team.add(teamLeader);
         StaffMemberIterator it = new StaffMemberIterator(teamLeader.getDirectSubordinates());
-        while(it.hasNext()) {
-            staff.add(it.next());
-        }
-        return staff;
+        while(it.hasNext()) team.add(it.next());
+        return team;
     }
-
 }

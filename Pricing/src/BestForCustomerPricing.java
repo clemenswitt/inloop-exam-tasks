@@ -1,22 +1,20 @@
 public class BestForCustomerPricing extends ComplexPricing {
     public BestForCustomerPricing(ISalePricing pricing) {
         super(pricing);
-        if(pricing == null) {
-            throw new NullPointerException("Pricing darf nicht null sein.");
-        }
     }
 
-    @Override
     public long getTotal(Sale sale) {
-        // Initialisierungswert -> wird garantiert unterschritten, da alle Preise in durch getPricings() zurückgegebenes Array rabattiert.
-        long bfcPricing = sale.getPreDiscountTotal();
+        if(sale == null) {
+            throw new NullPointerException();
+        }
+        long bestForCustomerPricing = sale.getPreDiscountTotal();
 
-        for (ISalePricing p : getPricings()) {
-            if(p.getTotal(sale) < bfcPricing) {
-                bfcPricing = p.getTotal(sale);
+        for(ISalePricing p : getPricings()) {
+            if(p.getTotal(sale) < bestForCustomerPricing) {
+                bestForCustomerPricing = p.getTotal(sale);
             }
         }
 
-        return bfcPricing;
+        return bestForCustomerPricing;
     }
 }

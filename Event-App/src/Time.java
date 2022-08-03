@@ -3,9 +3,7 @@ public class Time {
     private int minute;
 
     public Time(int hour, int minute) {
-        if(hour < 0 || minute < 0 || hour > 23 || minute > 59) {
-            throw new IllegalArgumentException();
-        }
+        if(hour < 0 || hour > 23 || minute < 0 || minute > 59) throw new IllegalArgumentException();
         this.hour = hour;
         this.minute = minute;
     }

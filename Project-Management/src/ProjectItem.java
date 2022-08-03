@@ -4,26 +4,22 @@ public abstract class ProjectItem {
     private double rate;
 
     public ProjectItem(String name, String details, double rate) {
-
         if(name == null || details == null) {
-            throw new NullPointerException("Arguments should not be zero");
+            throw new NullPointerException();
         }
         if(rate < 0 || name.isEmpty() || details.isEmpty()) {
-            throw new IllegalArgumentException("Rate must be > 0, Name & Details must not be empty");
+            throw new IllegalArgumentException();
         }
-
         this.name = name;
         this.details = details;
         this.rate = rate;
     }
 
     public void setDetails(String newDetails) {
-
         if(newDetails == null) {
-            throw new NullPointerException("newDetails must not be null.");
+            throw new NullPointerException();
         }
-
-        this.details = newDetails;
+        this.details = details;
     }
 
     public long getCostEstimate() {
@@ -31,6 +27,5 @@ public abstract class ProjectItem {
     }
 
     public abstract double getTimeRequired();
-
     public abstract long getMaterialCost();
 }

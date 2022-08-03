@@ -2,12 +2,8 @@ public class Person {
     private String name;
 
     public Person(String name) {
-        if(name == null) {
-            throw new NullPointerException("Name must not be null.");
-        }
-        if(name.isEmpty()) {
-            throw new IllegalArgumentException("Name must not be empty");
-        }
+        if(name == null) throw new NullPointerException();
+        if(name.isEmpty()) throw new IllegalArgumentException();
         this.name = name;
     }
 
@@ -15,7 +11,8 @@ public class Person {
         return name;
     }
 
+    @Override
     public String toString() {
-        return name;
+        return getName();
     }
 }

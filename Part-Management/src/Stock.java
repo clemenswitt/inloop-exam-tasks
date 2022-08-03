@@ -4,48 +4,41 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class Stock {
-    private Map<Part, Integer> parts;
-    private List<StockObserver> observers;
-
-    public Stock() {
-        this.parts = new HashMap<>();
-        this.observers = new ArrayList<>();
-    }
+    private Map<Part, Integer> parts = new HashMap<>();
+    private List<StockObserver> observers = new ArrayList<>();
 
     public int getCount(Part part) {
         if(part == null) {
-            throw new NullPointerException("Part must not be null.");
+            throw new NullPointerException();
         }
-
         return parts.getOrDefault(part, -1);
     }
 
     public boolean insert(Part part, int amount) {
         if(part == null) {
-            throw new NullPointerException("Part must not be null.");
+            throw new NullPointerException();
         }
-        if(amount < 1) {
-            throw new IllegalArgumentException("Illegal amount.");
+        if(amount <= 0) {
+            throw new IllegalArgumentException();
         }
-
         if(parts.containsKey(part)) {
             parts.replace(part, parts.get(part) + amount);
-        } else {
+        }
+        else{
             parts.put(part, amount);
         }
-
+        notifyPartCountChanged(part);
         return true;
     }
 
     public boolean remove(Part part, int amount) {
         if(part == null) {
-            throw new NullPointerException("Part must not be null.");
+            throw new NullPointerException();
         }
-        if(amount < 1) {
-            throw new IllegalArgumentException("Illegal amount.");
+        if(amount <= 0) {
+            throw new IllegalArgumentException();
         }
-
-        if(parts.containsKey(part) && (parts.getOrDefault(part, -1) > amount)) {
+        if(parts.containsKey(part) && parts.getOrDefault(part, -1) > amount) {
             parts.replace(part, parts.get(part) - amount);
             notifyPartCountChanged(part);
             return true;
@@ -55,18 +48,17 @@ public abstract class Stock {
 
     public void addObserver(StockObserver observer) {
         if(observer == null) {
-            throw new NullPointerException("Observer must not be null.");
+            throw new NullPointerException();
         }
         observers.add(observer);
     }
 
-    private void notifyPartCountChanged(Part part) {
-        if(part == null){
-            throw new NullPointerException("Part must not be null.");
+    public void notifyPartCountChanged(Part part) {
+        if(part == null) {
+            throw new NullPointerException();
         }
-
-        for(StockObserver obs : observers) {
-            obs.onPartCountChanged(part, getCount(part));
+        for(StockObserver o : observers) {
+            o.onPartCountChanged(part, getCount(part));
         }
     }
 }

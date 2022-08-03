@@ -3,18 +3,15 @@ public class StartsWith implements Predicate<String> {
 
     public StartsWith(String prefix) {
         if(prefix == null) {
-            throw new IllegalArgumentException("Prefix must not be null.");
+            throw new IllegalArgumentException();
         }
         this.prefix = prefix;
     }
 
-    @Override
     public boolean test(String value) {
-        if(value == null || value.length() < prefix.length()) {
+        if(value == null || value.length() < prefix.length() || !value.substring(0, prefix.length()).equals(prefix)) {
             return false;
         }
-
-        String valueSubString = value.substring(0,prefix.length());
-        return valueSubString.equals(prefix);
+        return true;
     }
 }

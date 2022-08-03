@@ -3,16 +3,15 @@ public class HasLength implements Predicate<String> {
 
     public HasLength(int length) {
         if(length < 0) {
-            throw new IllegalArgumentException("Illegal length.");
+            throw new IllegalArgumentException();
         }
         this.length = length;
     }
 
-    @Override
     public boolean test(String value) {
-        if(value == null) {
+        if(value == null || !(value.length() == length)) {
             return false;
         }
-        return value.length() == length;
+        return true;
     }
 }

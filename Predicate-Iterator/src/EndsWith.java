@@ -1,22 +1,17 @@
-import java.sql.Struct;
-
 public class EndsWith implements Predicate<String> {
     private String suffix;
 
     public EndsWith(String suffix) {
         if(suffix == null) {
-            throw new IllegalArgumentException("Suffix must not be null.");
+            throw new IllegalArgumentException();
         }
         this.suffix = suffix;
     }
 
-    @Override
     public boolean test(String value) {
-        if(value == null || value.length() < suffix.length()) {
+        if(value == null || value.length() < suffix.length() || !value.substring((value.length()-1) - (suffix.length() - 1), value.length()).equals(suffix)) {
             return false;
         }
-
-        String suffixSubString = value.substring((value.length() - 1) - (suffix.length() - 1), value.length());
-        return suffixSubString.equals(suffix);
+        return true;
     }
 }

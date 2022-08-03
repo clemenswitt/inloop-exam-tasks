@@ -1,19 +1,18 @@
+import java.util.HashSet;
 import java.util.Set;
-import java.util.TreeSet;
 
 public class PlainTextCollector implements KeywordCollector {
     @Override
     public Set<String> getKeywords(Resource res) {
-        if (res == null) {
-            throw new NullPointerException("Resource darf nicht null sein");
+        if(res == null) {
+            throw new NullPointerException();
         }
 
-        TextFileIterator tfi = new TextFileIterator(res);
+        TextFileIterator it = new TextFileIterator(res);
+        Set<String> keywords = new HashSet<>();
 
-        Set<String> keywords = new TreeSet<>();
-
-        while(tfi.hasNext()) {
-            keywords.add(tfi.next());
+        while(it.hasNext()) {
+            keywords.add(it.next());
         }
 
         return keywords;

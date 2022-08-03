@@ -7,21 +7,18 @@ import java.util.Map;
 public class Project {
     private String name;
     private String description;
-    private double rate;
     private Task mainTask;
 
     public Project(String name, String description, double rate) {
-
-        if(name.equals("") || rate < 0) {
-            throw new IllegalArgumentException("Arguments should not be zero");
+        if(name == null || description == null) {
+            throw new NullPointerException();
         }
-        if(name.isEmpty() || description.isEmpty()) {
-            throw new IllegalArgumentException("Name & Description should not be empty.");
+        if(rate < 0) {
+            throw new IllegalArgumentException();
         }
-
         this.name = name;
         this.description = description;
-        this.rate = rate;
+        this.mainTask = new Task(name, description, rate);
     }
 
     public String getName() {
@@ -32,11 +29,11 @@ public class Project {
         return description;
     }
 
-    public void setTask(Task task) {
-        if(task == null) {
-            throw new NullPointerException("Task must not be null.");
+    public void setTask(Task newTask) {
+        if(newTask == null) {
+            throw new NullPointerException();
         }
-        this.mainTask = task;
+        this.mainTask = newTask;
     }
 
     public double getDuration() {
@@ -66,6 +63,4 @@ public class Project {
 
         return allDeliverablesMap;
     }
-
-
 }

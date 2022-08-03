@@ -1,14 +1,12 @@
+import java.lang.Comparable;
+
 public class Event implements Comparable<Event> {
     private String title;
     private EventCategory category;
 
     public Event(String title, EventCategory category) {
-        if(title == null || category == null) {
-            throw new NullPointerException();
-        }
-        if(title.isEmpty()) {
-            throw new IllegalArgumentException();
-        }
+        if(title == null || category == null) throw new NullPointerException();
+        if(title.isEmpty()) throw new IllegalArgumentException();
         this.title = title;
         this.category = category;
     }
