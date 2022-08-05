@@ -1,50 +1,42 @@
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class StructuredObject extends RenovationObject {
-
     private Set<RenovationObject> parts;
 
     public StructuredObject() {
-        parts = new HashSet<>();
+        this.parts = new HashSet<>();
     }
 
     public void add(RenovationObject renovationObject) {
         if(renovationObject == null) {
-            throw new NullPointerException("RenovationObject must not be null");
+            throw new NullPointerException();
         }
         parts.add(renovationObject);
     }
 
+    @Override
     public double getPrice() {
         double price = 0;
-        for(RenovationObject object : parts) {
-            price += object.getPrice();
+        for(RenovationObject obj : parts) {
+            price += obj.getPrice();
         }
         return price;
     }
 
     @Override
     public Map<String, Integer> addMaterialRequirements(Map<String, Integer> materials) {
-
         if(materials == null) {
-            throw new NullPointerException("Materials must not be null.");
+            throw new NullPointerException();
         }
 
         materials.forEach((k,v) -> {
-            if(k == null || v == null) {
-                throw new NullPointerException("K,V must not be null.");
-            }
+            if(k == null || v == null) throw new NullPointerException();
         });
 
-        for(RenovationObject renovationObject : parts) {
-            materials = renovationObject.addMaterialRequirements(materials);
+        for(RenovationObject obj: parts) {
+            materials = obj.addMaterialRequirements(materials);
         }
 
-        return materials;
+        return  materials;
     }
-
-
-
 }

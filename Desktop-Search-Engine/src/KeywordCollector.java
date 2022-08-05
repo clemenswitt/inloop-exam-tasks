@@ -1,5 +1,5 @@
 import java.util.Set;
 
-public interface KeywordCollector {
+public interface KeywordCollector{
     Set<String> getKeywords(Resource res);
 }

@@ -9,33 +9,28 @@ public class Index {
 
     public void add(Resource res) {
         if(res == null) {
-            throw new NullPointerException("Ressource darf nicht null sein.");
+            throw new NullPointerException();
         }
 
-        Set<String> keywordsOfRes = res.getType().getCollector().getKeywords(res);
+        //Get keywords of res
+        Set<String> keyWordsOfRes = res.getType().getCollector().getKeywords(res);
 
-        for(String currentKeyword : keywordsOfRes) {
-
-            // Keyword in index nicht enthalten -> neu anlegen
-            if(!index.containsKey(currentKeyword)) {
-                index.put(currentKeyword, new ArrayList<>());
+        for(String keyWord : keyWordsOfRes) {
+            //Put keyword if not already in index
+            if(!index.containsKey(keyWord)) {
+                index.put(keyWord, new ArrayList<>());
             }
-
-            // Keyword nun definitiv vorhanden
-            // Hinzuzufügende Ressource noch nicht bei Keyword vorhanden? -> ArrayList des Keywords Ressource hinzufügen
-            if(!index.get(currentKeyword).contains(res)) {
-                index.get(currentKeyword).add(res);
+            //Add resource to keyword if not already existent
+            if(!index.get(keyWord).contains(res)) {
+                index.get(keyWord).add(res);
             }
         }
     }
 
     public List<Resource> getResources(String keyword) {
-        if(keyword.isEmpty()) {
-            throw new IllegalArgumentException("Keyword darf nicht null sein.");
+        if(keyword == null) {
+            throw new NullPointerException();
         }
-
-        // Wenn keyword gefunden, wird entsprechende Liste zurückgegeben; sonst neue, leere ArrayList
         return index.getOrDefault(keyword, new ArrayList<>());
     }
-
 }

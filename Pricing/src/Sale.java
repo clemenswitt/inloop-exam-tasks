@@ -4,11 +4,10 @@ public class Sale {
 
     public Sale(long preDiscountTotal, ISalePricing pricing) {
         if(pricing == null) {
-            throw new NullPointerException("Pricing-Argument darf nicht null sein.");
+            throw new NullPointerException();
         }
-
         if(preDiscountTotal < 0) {
-            throw new IllegalArgumentException("preDiscountTotal darf nicht <0 sein.");
+            throw new IllegalArgumentException();
         }
 
         this.preDiscountTotal = preDiscountTotal;
@@ -21,9 +20,8 @@ public class Sale {
 
     public void setPricing(ISalePricing pricing) {
         if(pricing == null) {
-            throw new NullPointerException("Pricing darf nicht null sein");
+            throw new NullPointerException();
         }
-
         this.pricing = pricing;
     }
 
@@ -32,21 +30,14 @@ public class Sale {
     }
 
     public static ISalePricing createPricing(DiscountType discountType, double percentage, long discount, long threshold) {
-
         if(discountType == null) {
-            throw new NullPointerException("discountType darf nicht null sein");
+            throw new NullPointerException();
         }
 
         switch (discountType) {
-            case ABSOLUTEDISCOUNT:
-                return new AbsoluteDiscountPricing(discount, threshold);
-            case PERCENTAGEDISCOUNT:
-                return new PercentageDiscountPricing(percentage);
-            default:
-                return null;
+            case ABSOLUTEDISCOUNT: return new AbsoluteDiscountPricing(discount, threshold);
+            case PERCENTAGEDISCOUNT: return new PercentageDiscountPricing(percentage);
+            default: return null;
         }
     }
-
-
-
 }

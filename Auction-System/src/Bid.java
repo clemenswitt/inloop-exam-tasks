@@ -3,13 +3,8 @@ public class Bid {
     private Person bidder;
 
     public Bid(Person bidder, long price) {
-        if(bidder == null) {
-            throw new NullPointerException("Bidder must not be null.");
-        }
-        if(price <= 0) {
-            throw new IllegalArgumentException("Price must be > 0.");
-        }
-
+        if(bidder == null) throw new NullPointerException();
+        if(price <= 0) throw new IllegalArgumentException();
         this.bidder = bidder;
         this.price = price;
     }
@@ -22,7 +17,8 @@ public class Bid {
         return price;
     }
 
+    @Override
     public String toString() {
-        return price + " EUR by " + bidder;
+        return getPrice() + " EUR by " + getBidder().getName();
     }
 }

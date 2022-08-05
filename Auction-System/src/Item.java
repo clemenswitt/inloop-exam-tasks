@@ -9,13 +9,8 @@ public class Item {
     private Bid highestBid;
 
     public Item(String name, String description, long minPrice) {
-        if(name == null || description == null) {
-            throw new NullPointerException("Name & Description must not be null.");
-        }
-        if(minPrice <= 0 || name.isEmpty() || description.isEmpty()) {
-            throw new IllegalArgumentException("MinPrice must be > 0. Name & Description must not empty.");
-        }
-
+        if(name == null || description == null) throw new NullPointerException();
+        if(name.isEmpty() || description.isEmpty() || minPrice <= 0) throw new IllegalArgumentException();
         this.name = name;
         this.description = description;
         this.minPrice = minPrice;
@@ -23,17 +18,12 @@ public class Item {
     }
 
     public void addBid(Person bidder, long price) {
-        if(bidder == null) {
-            throw new NullPointerException("Bidder must not be null.");
-        }
-        if(price <= 0) {
-            throw new IllegalArgumentException("Price must be > 0.");
-        }
-
+        if(bidder == null) throw new NullPointerException();
+        if(price <= 0) throw new IllegalArgumentException();
         if(price >= minPrice && (highestBid == null || price > highestBid.getPrice())) {
             Bid bid = new Bid(bidder, price);
-            allBids.add(bid);
             highestBid = bid;
+            allBids.add(bid);
         }
     }
 
@@ -50,10 +40,11 @@ public class Item {
     }
 
     public Bid getHighestBid() {
-        return highestBid;
+       return highestBid;
     }
 
+    @Override
     public String toString() {
-        return this.name + ": " + this.description + " (minimum bidding price: " + this.minPrice + " EUR)";
+        return name + ": " + description + " (minimum bidding price: " + minPrice + " EUR)";
     }
 }

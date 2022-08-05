@@ -1,36 +1,33 @@
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Adapter extends Project implements IProject {
-    private Task mainTask;
-
     public Adapter(String name, String description, double rate) {
         super(name, description, rate);
-
-        if(name.isEmpty() || description.isEmpty()) {
-            throw new IllegalArgumentException("Name must not be empty");
-        }
     }
 
     @Override
-    public void setTask(Task task) {
-        if(task == null) {
-            throw new NullPointerException("Task must not be null.");
-        }
-        this.mainTask = task;
+    public void setTask(Task newTask) {
+        super.setTask(newTask);
     }
 
     @Override
     public double getDuration() {
-        return mainTask.getTimeRequired();
+        return super.getDuration();
     }
 
     @Override
     public long getTotalCost() {
-        return mainTask.getCostEstimate();
+        return super.getTotalCost();
     }
 
     @Override
     public List<Deliverable> getDeliverables() {
-        return mainTask.allDeliverables();
+        List<Deliverable> allDeliverables = new ArrayList<>();
+        for(LocalDate date : super.allDeliverables().keySet()) {
+            allDeliverables.addAll(super.allDeliverables().get(date));
+        }
+        return allDeliverables;
     }
 }

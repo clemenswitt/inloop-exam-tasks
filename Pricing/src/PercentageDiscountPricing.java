@@ -3,14 +3,15 @@ public class PercentageDiscountPricing implements ISalePricing {
 
     public PercentageDiscountPricing(double percentage) {
         if(percentage < 0 || percentage > 100) {
-            throw new IllegalArgumentException("Ungültige Prozentangabe!");
+            throw new IllegalArgumentException();
         }
-
         this.percentage = percentage;
     }
 
-    @Override
     public long getTotal(Sale sale) {
-        return sale.getPreDiscountTotal() - (long)(sale.getPreDiscountTotal() * percentage / 100);
+        if(sale == null) {
+            throw new NullPointerException();
+        }
+        return (long)(sale.getPreDiscountTotal() * (100 - percentage) / 100);
     }
 }

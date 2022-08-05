@@ -4,18 +4,19 @@ public class AbsoluteDiscountPricing implements ISalePricing {
 
     public AbsoluteDiscountPricing(long discount, long threshold) {
         if(discount < 0 || threshold < 0) {
-            throw new IllegalArgumentException("Discount oder Threshold dürfen nicht <0 sein.");
+            throw new IllegalArgumentException();
         }
-
         this.discount = discount;
         this.threshold = threshold;
     }
 
-    @Override
     public long getTotal(Sale sale) {
-        if(sale.getPreDiscountTotal() - discount > threshold) {
+        if(sale == null) {
+            throw new NullPointerException();
+        }
+        if(sale.getPreDiscountTotal() - discount >= threshold) {
             return sale.getPreDiscountTotal() - discount;
         }
-        return Math.min(sale.getPreDiscountTotal(), this.threshold);
+        return Math.min(sale.getPreDiscountTotal(), threshold);
     }
 }

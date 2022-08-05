@@ -3,14 +3,14 @@ public abstract class Part {
     private String name;
 
     public Part(String id, String name) {
-        if(id == null || name == null) {
-            throw new NullPointerException("ID & Name must not be null.");
+        if(name == null || id == null) {
+            throw new NullPointerException();
         }
-        if(id.isEmpty() || name.isEmpty()) {
-            throw new IllegalArgumentException("ID & Name must not be empty.");
+        if(name.isEmpty() || id.isEmpty()) {
+            throw new IllegalArgumentException();
         }
-        this.id = id;
         this.name = name;
+        this.id = id;
     }
 
     public String getId() {
