@@ -1,18 +1,15 @@
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.lang.Comparable;
 
-public class StaffMember implements Comparable<StaffMember> {
+public class StaffMember implements EnterpriseNode, Comparable<StaffMember> {
     private String name;
     private String job;
     private SortedSet<StaffMember> directSubordinates;
 
     public StaffMember(String name, String job) {
-        if(name == null || job == null) {
-            throw new NullPointerException();
-        }
-        if(name.isEmpty() || job.isEmpty()) {
-            throw new IllegalArgumentException();
-        }
+        if(name == null || job == null) throw new NullPointerException();
+        if(name.isEmpty() || job.isEmpty()) throw new IllegalArgumentException();
         this.name = name;
         this.job = job;
         directSubordinates = new TreeSet<>();
@@ -22,17 +19,16 @@ public class StaffMember implements Comparable<StaffMember> {
         return job;
     }
 
+    @Override
+    public String getName() {
+        return name;
+    }
+
     public boolean addDirectSubordinate(StaffMember subordinate) {
-        if(subordinate == null) {
-            throw new NullPointerException();
-        }
         return directSubordinates.add(subordinate);
     }
 
     public boolean removeDirectSubordinate(StaffMember subordinate) {
-        if(subordinate == null) {
-            throw new NullPointerException();
-        }
         return directSubordinates.remove(subordinate);
     }
 
@@ -40,18 +36,14 @@ public class StaffMember implements Comparable<StaffMember> {
         return directSubordinates;
     }
 
+    @Override
     public String toString() {
-        return name;
+        return getName();
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public int compareTo(StaffMember m) {
-        if(m == null) {
-            throw new NullPointerException();
-        }
-        return name.compareTo(m.getName());
+    @Override
+    public int compareTo(StaffMember o) {
+        if(o == null) throw new NullPointerException();
+        return getName().compareTo(o.getName());
     }
 }

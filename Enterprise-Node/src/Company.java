@@ -5,12 +5,8 @@ public class Company extends AbstractUnit {
 
     @Override
     public boolean add(AbstractEnterpriseUnit childNode) {
-        if(childNode == null) {
-            throw new NullPointerException();
-        }
-        if(childNode instanceof Team || childNode instanceof Holding || childNode instanceof Company) {
-            throw new IllegalArgumentException();
-        }
+        if(childNode == null) throw new NullPointerException();
+        if(!(childNode instanceof Division)) throw new IllegalArgumentException();
         return super.add(childNode);
     }
 }
