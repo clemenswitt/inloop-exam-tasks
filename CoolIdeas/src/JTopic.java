@@ -3,10 +3,6 @@ public class JTopic extends JContent {
 
     public JTopic(String title, String description, int id) {
         super(title, description);
-
-        if(id < 0) {
-            throw new IllegalArgumentException();
-        }
         this.id = id;
     }
 
@@ -15,6 +11,6 @@ public class JTopic extends JContent {
     }
 
     public String toString() {
-        return "Topic: " + super.getTitle() + "\n" + super.getDescription();
+        return "Topic: " + getTitle() + "\n" + getDescription();
     }
 }

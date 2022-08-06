@@ -1,5 +1,3 @@
-import com.sun.security.auth.UnixNumericUserPrincipal;
-
 import java.util.*;
 
 public class JIdeaPool {
@@ -10,56 +8,31 @@ public class JIdeaPool {
     }
 
     public void add(JTopic topic) {
-        if(topic == null) {
-            throw new NullPointerException();
-        }
-
-        if(!pool.containsKey(topic)) {
-            pool.put(topic, new LinkedHashSet<>());
-        }
+        if(topic == null) throw new NullPointerException();
+        if(!pool.containsKey(topic)) pool.put(topic, new HashSet<>());
     }
 
     public void add(JIdea idea, JTopic topic) {
-        if(topic == null || idea == null) {
-            throw new NullPointerException();
+        if(idea == null || topic == null) throw new NullPointerException();
+        boolean ideaExists = false;
+        for(Set<JIdea> ideaSet : pool.values()) {
+            for(JIdea i : ideaSet) {
+                if(i.hashCode() == idea.hashCode()) ideaExists = true;
+                break;
+            }
         }
-
-        // Topic bereits vorhanden?
-        boolean ideaAlreadyExists = false;
-        if(pool.containsKey(topic)) {
-            // Ist idea bereits in topic vorhanden?
-            for(JIdea i : pool.get(topic)) {
-                if(i.getTitle().equals(idea.getTitle())) {
-                    ideaAlreadyExists = true;
-                    break;
-                }
-            }
-            if(!ideaAlreadyExists) {
-                pool.get(topic).add(idea);
-            }
-        } else {
-            // idea bereits in anderem idea-Set vorhanden?
-            for(Set<JIdea> ideaSet : pool.values()) {
-                for(JIdea i : ideaSet) {
-                    if(i.getTitle().equals(idea.getTitle()) && i != idea) {
-                        ideaAlreadyExists = true;
-                        break;
-                    }
-                }
-            }
-            if(!ideaAlreadyExists) {
-                Set<JIdea> newIdeaSet = new HashSet<>();
-                newIdeaSet.add(idea);
-                pool.put(topic, newIdeaSet);
+        if(!ideaExists) {
+            if(!pool.containsKey(topic)) pool.put(topic, new HashSet<>(Arrays.asList(idea)));
+            else {
+                Set<JIdea> ideas = pool.get(topic);
+                ideas.add(idea);
+                pool.replace(topic, ideas);
             }
         }
     }
 
     public boolean remove(JTopic topic) {
-        if(topic == null) {
-            throw new NullPointerException();
-        }
-
+        if(topic == null) throw new NullPointerException();
         if(pool.containsKey(topic)) {
             pool.remove(topic);
             return true;
@@ -68,9 +41,7 @@ public class JIdeaPool {
     }
 
     public boolean remove(JIdea idea) {
-        if(idea == null) {
-            throw new NullPointerException();
-        }
+        if(idea == null) throw new NullPointerException();
 
         boolean removed = false;
         for(Set<JIdea> ideaSet : pool.values()) {
@@ -83,12 +54,8 @@ public class JIdeaPool {
     }
 
     public JIdea getIdea(String title) {
-        if(title == null) {
-            throw new NullPointerException();
-        }
-        if(title.isEmpty()) {
-            throw new IllegalArgumentException();
-        }
+        if(title == null) throw new NullPointerException();
+        if(title.isEmpty()) throw new IllegalArgumentException();
 
         for(Set<JIdea> ideaSet : pool.values()) {
             for(JIdea idea : ideaSet) {

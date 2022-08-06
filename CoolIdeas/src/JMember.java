@@ -1,12 +1,8 @@
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
-
 public class JMember implements ContentObserver {
     private Set<JTopic> topics = new HashSet<>();
-
-    public void update(JTopic content) {
-        System.out.println("The topic " + content.getId() + " has been updated!");
-    }
 
     public void subscribe(JTopic topic) {
         if(topic == null) throw new NullPointerException();
@@ -22,5 +18,10 @@ public class JMember implements ContentObserver {
 
     public Set<JTopic> getSubscribedTopics() {
         return topics;
+    }
+
+    public void update(JContent content) {
+        if(content == null) throw new NullPointerException();
+        System.out.println("The topic "+ ((JTopic) content).getId() + " has been updated!");
     }
 }

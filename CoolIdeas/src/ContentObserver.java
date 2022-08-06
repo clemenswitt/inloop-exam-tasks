@@ -1,3 +1,3 @@
 public interface ContentObserver {
-    void update(JTopic content);
+    void update(JContent content);
 }

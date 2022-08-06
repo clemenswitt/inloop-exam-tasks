@@ -4,6 +4,6 @@ public class JValuation extends JContent {
     }
 
     public String toString() {
-        return "Valuation: " + super.getTitle() + "\n" + super.getDescription();
+        return "Valuation: " + getTitle() + "\n" + getDescription();
     }
 }
