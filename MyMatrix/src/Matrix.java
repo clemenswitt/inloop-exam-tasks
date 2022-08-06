@@ -1,9 +1,8 @@
-import java.util.Iterator;
+import java.util.*;
 
 public interface Matrix<T> {
     int getRowCount();
     int getColumnCount();
-
     int getObjectCount();
     int getDistinctObjectCount();
     Iterator<T> iterator();
